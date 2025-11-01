@@ -62,7 +62,7 @@ class SACFoosballAgent(FoosballAgent):
 
     def learn(self, total_timesteps):
         if self.model is None:
-            self.model = SAC('MlpPolicy', self.env, policy_kwargs=self.policy_kwargs, buffer_size=1000000)
+            self.model = SAC('MlpPolicy', self.env, policy_kwargs=self.policy_kwargs, device='cuda', buffer_size=1000000)
         callback = self.create_callback(self.env, total_timesteps)
         tb_log_name = f'sac_{self.id}'
         self.model.learn(total_timesteps=total_timesteps, callback=callback, tb_log_name=tb_log_name)
@@ -86,7 +86,7 @@ class SACFoosballAgent(FoosballAgent):
         self.model.save(self.id_subdir + '/sac/best_model')
 
     def load(self):
-        self.model = SAC.load(self.id_subdir + '/sac/best_model/best_model.zip')
+        self.model = SAC.load(self.id_subdir + '/sac/best_model/best_model.zip', device='cuda')
         print(f"Agent {self.id} loaded model from {self.id_subdir}/sac/best_model/best_model.zip")
 
     def change_env(self, env):
