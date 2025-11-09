@@ -10,7 +10,7 @@ from ai_agents.v1.gym.mujoco_table_render_mixin import MujocoTableRenderMixin
 DIRECTION_CHANGE = 1
 TABLE_MAX_Y_DIM = 10
 BALL_STOPPED_COUNT_THRESHOLD = 100
-SIM_PATH = os.environ.get('SIM_PATH', '/Research/Foosball_CU/foosball_sim/v1/foosball_sim.xml')
+SIM_PATH = os.environ.get('SIM_PATH', '/foosballpart2/foosball_sim/v1/foosball_sim.xml')
 
 class FoosballEnv( gym.Env):
     metadata = {'render.modes': ['human', 'rgb_array']}

@@ -4,7 +4,7 @@ import mujoco
 from mujoco import viewer
 import argparse
 
-SIM_PATH = os.environ.get('SIM_PATH', '/Research/Foosball_CU/foosball_sim/v2/foosball_sim.xml')
+SIM_PATH = os.environ.get('SIM_PATH', '/foosballpart2/foosball_sim/v2/foosball_sim.xml')
 
 def main():
     arg_parser = argparse.ArgumentParser()

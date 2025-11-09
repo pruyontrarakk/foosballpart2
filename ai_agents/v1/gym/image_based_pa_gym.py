@@ -11,7 +11,7 @@ from ai_agents.v1.gym.mujoco_table_render_mixin import MujocoTableRenderMixin
 DIRECTION_CHANGE = 1
 TABLE_MAX_Y_DIM = 10
 BALL_STOPPED_COUNT_THRESHOLD = 80
-SIM_PATH = os.environ.get('SIM_PATH', '/Research/Foosball_CU/foosball_sim/v1/foosball_sim.xml')
+SIM_PATH = os.environ.get('SIM_PATH', '/foosballpart2/foosball_sim/v1/foosball_sim.xml')
 
 # self.cam.azimuth = 180.0
 # self.cam.elevation = -70.0
@@ -49,7 +49,7 @@ class FoosballEnv(gym.Env):
         super(FoosballEnv, self).__init__()
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        xml_file = os.environ.get('SIM_PATH', '/Research/Foosball_CU/foosball_sim/v1/foosball_sim.xml')
+        xml_file = os.environ.get('SIM_PATH', '/foosballpart2/foosball_sim/v1/foosball_sim.xml')
         self.model = mujoco.MjModel.from_xml_path(xml_file)
         self.data = mujoco.MjData(self.model)
 
