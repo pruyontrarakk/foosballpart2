@@ -17,8 +17,6 @@ from ai_agents.v2.gym.full_information_protagonist_antagonist_gym import Foosbal
 # ---- env factory (identical wrapping to SAC path) ----
 def tqc_foosball_env_factory(_=None):
     env = FoosballEnv(antagonist_model=None)
-    # Guardrail for MPS: force float32 obs (no-ops if already float32)
-    env = TransformObservation(env, lambda o: o.astype(np.float32), dtype=np.float32)
     env = Monitor(env)
     return env
 
