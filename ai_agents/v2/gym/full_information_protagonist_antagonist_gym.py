@@ -13,7 +13,7 @@ DIRECTION_CHANGE = 1
 TABLE_MAX_Y_DIM = 65
 BALL_STOPPED_COUNT_THRESHOLD = 10
 MAX_STEPS = 40
-SIM_PATH = os.environ.get('SIM_PATH', '/Users/kaikaizhang/foosballpart2/foosball_sim/v2/foosball_sim.xml')
+SIM_PATH = os.environ.get('SIM_PATH', '/home/ppy2104/foosballpart2/foosball_sim/v2/foosball_sim.xml')
 F32   = np.float32
 INF32 = np.finfo(np.float32).max
 
