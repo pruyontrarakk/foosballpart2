@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 import torch
 
-torch.set_default_dtype(torch.float32)
+# torch.set_default_dtype(torch.float32)
 
 from stable_baselines3.common.monitor import Monitor
 from gymnasium.wrappers import TransformObservation
