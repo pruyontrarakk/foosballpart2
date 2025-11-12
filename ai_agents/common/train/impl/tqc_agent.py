@@ -128,3 +128,10 @@ class TQCFoosballAgent(FoosballAgent):
         callback = self.create_callback(self.env, total_timesteps=total_timesteps)
         tb_log_name = f"tqc_{self.id}"
         self.model.learn(total_timesteps=total_timesteps, callback=callback, tb_log_name=tb_log_name)
+
+    def change_env(self, env) -> None:
+        """Swap the active Gym env (used by GenericAgentManager.set_agent_environment)."""
+        self.env = env
+        if self.model is not None:
+            # SB3 provides set_env to rebind the environment safely.
+            self.model.set_env(env)
