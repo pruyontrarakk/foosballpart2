@@ -73,7 +73,7 @@ class FoosballEnv(gym.Env):
 
         action_high = np.ones(self.protagonist_action_size)
         self.action_space = spaces.Box(
-            low=-3.5 * action_high, high=3.5 * action_high, dtype=np.float32
+            low=-3.5 * action_high, high=3.5 * action_high, dtype=np.float64
         )
 
         self.observation_space = spaces.Box(

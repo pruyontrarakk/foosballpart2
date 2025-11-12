@@ -35,12 +35,12 @@ class FoosballEnv( gym.Env):
 
         action_high = np.ones(self.protagonist_action_size)
         self.action_space = spaces.Box(
-            low=-3.5 * action_high, high=3.5 * action_high, dtype=np.float32
+            low=-3.5 * action_high, high=3.5 * action_high, dtype=np.float64
         )
 
         obs_dim = 38
         self.observation_space = spaces.Box(
-            low=-np.inf, high=np.inf, shape=(obs_dim,), dtype=np.float32
+            low=-np.inf, high=np.inf, shape=(obs_dim,), dtype=np.float64
         )
 
         self.viewer = None

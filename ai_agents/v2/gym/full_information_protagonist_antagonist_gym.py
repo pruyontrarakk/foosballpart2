@@ -13,7 +13,9 @@ DIRECTION_CHANGE = 1
 TABLE_MAX_Y_DIM = 65
 BALL_STOPPED_COUNT_THRESHOLD = 10
 MAX_STEPS = 40
-SIM_PATH = os.environ.get('SIM_PATH', '/foosballpart2/foosball_sim/v2/foosball_sim.xml')
+SIM_PATH = os.environ.get('SIM_PATH', '/Users/kaikaizhang/foosballpart2/foosball_sim/v2/foosball_sim.xml')
+F32   = np.float32
+INF32 = np.finfo(np.float32).max
 
 RODS = ["_goal_", "_def_", "_mid_", "_attack_"]
 
@@ -38,32 +40,34 @@ class FoosballEnv( MujocoTableRenderMixin, gym.Env, ):
         self.protagonist_action_size = self.num_rods_per_player * 2  # 8 actions for protagonist
         self.antagonist_action_size = self.num_rods_per_player * 2   # 8 actions for antagonist
 
-        action_high = np.ones(self.protagonist_action_size)
-        self.rotation_action_space = spaces.Box(
-            low=-2.5 * action_high, high=2.5 * action_high, dtype=np.float32
-        )
+        action_high = np.ones(self.protagonist_action_size, dtype=F32)
 
+        self.rotation_action_space = spaces.Box(
+            low=F32(-2.5) * action_high, high=F32(2.5) * action_high, dtype=F32
+        )
         self.goal_linear_action_space = spaces.Box(
-            low=-10.0 * action_high, high=10.0 * action_high, dtype=np.float32
+            low=F32(-10.0) * action_high, high=F32(10.0) * action_high, dtype=F32
         )
         self.def_linear_action_space = spaces.Box(
-            low=-20.0 * action_high, high=20.0 * action_high, dtype=np.float32
+            low=F32(-20.0) * action_high, high=F32(20.0) * action_high, dtype=F32
         )
         self.mid_linear_action_space = spaces.Box(
-            low=-7.0 * action_high, high=7.0 * action_high, dtype=np.float32
+            low=F32(-7.0) * action_high, high=F32(7.0) * action_high, dtype=F32
         )
         self.attack_linear_action_space = spaces.Box(
-            low=-12.0 * action_high, high=12.0 * action_high, dtype=np.float32
+            low=F32(-12.0) * action_high, high=F32(12.0) * action_high, dtype=F32
         )
 
         # TEMP
         self.action_space = spaces.Box(
-            low=-20 * action_high, high=20 * action_high, dtype=np.float32
+            low=F32(-20.0) * action_high, high=F32(20.0) * action_high, dtype=F32
         )
 
         obs_dim = 38
         self.observation_space = spaces.Box(
-            low=-np.inf, high=np.inf, shape=(obs_dim,), dtype=np.float32
+            low=np.full((obs_dim,), -INF32, dtype=F32),
+            high=np.full((obs_dim,),  INF32, dtype=F32),
+            dtype=F32,
         )
 
         self.viewer = None
@@ -95,10 +99,7 @@ class FoosballEnv( MujocoTableRenderMixin, gym.Env, ):
         x_qpos_adr = self.model.jnt_qposadr[ball_x_id]
         y_qpos_adr = self.model.jnt_qposadr[ball_y_id]
 
-        xy_random = np.random.normal(
-            loc=[-0.5, 0.0],
-            scale=[0.5, 0.5]
-        )
+        xy_random = np.random.normal(loc=[-0.5, 0.0], scale=[0.5, 0.5]).astype(F32)
 
         self.data.qpos[x_qpos_adr] = xy_random[0]
         self.data.qpos[y_qpos_adr] = xy_random[1]
@@ -129,14 +130,14 @@ class FoosballEnv( MujocoTableRenderMixin, gym.Env, ):
         mujoco.mj_step(self.model, self.data)
         self.simulation_time += self.model.opt.timestep
 
-        obs = self._get_obs()
+        obs = self._get_obs().astype(F32)
 
         reward = self.compute_reward(protagonist_action)
         terminated = self.terminated
 
         info = {}
 
-        return obs, reward, terminated, False, info
+        return obs, F32(reward), bool(terminated), False, info
 
     def _get_ball_obs(self):
         ball_x_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, 'ball_x')
@@ -202,7 +203,7 @@ class FoosballEnv( MujocoTableRenderMixin, gym.Env, ):
             rod_slide_velocities,
             rod_rotate_positions,
             rod_rotate_velocities
-        ])
+        ]).astype(F32, copy=False)
 
         assert obs.shape == self.observation_space.shape, (
             f"Observation shape {obs.shape} does not match observation space shape {self.observation_space.shape}"

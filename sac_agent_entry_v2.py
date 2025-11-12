@@ -1,3 +1,8 @@
+# at the top of sac_agent_entry_v2.py
+import numpy as np
+import torch
+torch.set_default_dtype(torch.float32) # be explicit on default
+from gymnasium.wrappers import TransformObservation
 import os
 from ai_agents.common.train.impl.protagonist_antagonist_training_engine import ProtagonistAntagonistTrainingEngine
 from ai_agents.common.train.impl.generic_agent_manager import GenericAgentManager
