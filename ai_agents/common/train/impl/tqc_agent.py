@@ -99,7 +99,7 @@ class TQCFoosballAgent(FoosballAgent):
         action, _ = self.model.predict(observation, deterministic=deterministic)
         return action
 
-    def create_callback(self, env, total_timesteps=None, show_progress=True):
+    def create_callback(self, env, total_timesteps=None, show_progress=False):
         eval_cb = EvalCallback(
             env,
             best_model_save_path=str(self._best_model_basepath().parent),
